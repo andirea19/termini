@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace termini2
+namespace termini
 {
     internal class Program
     {
