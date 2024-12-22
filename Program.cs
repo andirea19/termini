@@ -55,5 +55,71 @@ class Program
         }
     }
 
+    // Funktion: Aufgabe hinzufügen
+    static void AufgabeHinzufügen()
+    {
+        Console.Write("Gib die Beschreibung der Aufgabe ein: ");
+        string beschreibung = Console.ReadLine();
 
+        Console.Write("Gib das Fälligkeitsdatum ein (dd.MM.yyyy): ");
+        if (DateTime.TryParse(Console.ReadLine(), out DateTime fälligkeitsdatum))
+        {
+            toDoListe.Add(new Task(beschreibung, fälligkeitsdatum));
+            Console.WriteLine("Aufgabe erfolgreich hinzugefügt!");
+        }
+        else
+        {
+            Console.WriteLine("Ungültiges Datum.");
+        }
+        Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+        Console.ReadKey();
+    }
+
+    // Funktion: Aufgaben anzeigen
+    static void AufgabenAnzeigen()
+    {
+        Console.WriteLine("Deine Aufgaben:");
+        foreach (var aufgabe in toDoListe)
+        {
+            Console.WriteLine(aufgabe);
+        }
+        Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+        Console.ReadKey();
+    }
+
+    // Funktion definiert: Geburtstag anlegen (und speichern - Name??)
+    static void GeburtstagSpeichern()
+    {
+        Console.Write("Gib den Namen ein: ");
+        string name = Console.ReadLine();
+
+// Info, wie das Datum angegeben wird
+// Ev. spalten auf Tag, Monat und Jahr?
+
+        Console.Write("Gib das Geburtsdatum ein (dd.MM.yyyy): ");
+        if (DateTime.TryParse(Console.ReadLine(), out DateTime datum))
+        {
+            geburtstage.Add(new Birthday(name, datum));
+            Console.WriteLine("Geburtstag erfolgreich gespeichert!");
+        }
+        else
+        {
+            Console.WriteLine("Ungültiges Datum.");
+        }
+        Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+        Console.ReadKey();
+    }
+
+    // Funktion: Geburtstage anzeigen
+    // Anzahl definieren? Ansichen pro Seite?
+    static void GeburtstageAnzeigen()
+    {
+        Console.WriteLine("Gespeicherte Geburtstage:");
+        foreach (var geburtstag in geburtstage)
+        {
+            Console.WriteLine(geburtstag);
+        }
+        Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+        Console.ReadKey();
+    }
 }
