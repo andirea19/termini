@@ -3,6 +3,7 @@
 #Kalenderintegration
 To-Dos mit einem Datum und eventuell einer Uhrzeit versehen.
 Darstellung von To-Dos in einem Kalenderformat (z. B. nach Tagen oder Wochen).
+
 #Geburtstag speichern
 Speicherung von Geburtstaginfo
 Optionale Erinnerung (z.B. eine Woche vorher).
