@@ -11,6 +11,9 @@ public class Geburtstag
         Datum = datum;
     }
 
+    // nicht Birthday, sondern Geburtstag!
+#warning NICHT Birthday, sondern Geburtstag!
+
     public override string ToString()
     {
         return $"{Name} - Geburtstag: {Datum:dd.MM.yyyy}";

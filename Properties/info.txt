@@ -1,0 +1,46 @@
+ string dbName = "dbname";
+
+    // create connection string
+    string connectionstring = @"Data Source=DESKTOP-M5K3KFI\SQLEXPRESS;" +
+        "Trusted_Connection = yes;" +
+        $"database={dbName};" +
+        "connection timeout=10";
+    //string connectionstring = @"Data Source=C:\sqlite-tools-win32\sample.db";
+
+    //using (var connection = new SqliteConnection(connectionstring))
+    using (var connection = new SqlConnection(connectionstring))
+    {            
+        // Opens a new connection
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "Select * from departments";
+
+        using (var reader = command.ExecuteReader())
+        {
+            while(reader.Read())
+            {
+                string id = reader.GetString(0);
+                string name = reader.GetString(1);
+                Console.WriteLine(name);
+            }
+        }
+    }
+
+    using (var connection = new SqlConnection(connectionstring))
+    {
+
+        // Opens a new connection
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "insert into departments values (2, 'IT')";
+
+        int rows = command.ExecuteNonQuery();
+        
+        if(rows < 1)
+        {
+            Console.WriteLine("No rows affected");
+        }
+    }
+}
