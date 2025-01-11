@@ -1,0 +1,16 @@
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\obj\Debug\termini.csproj.AssemblyReference.cache
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\obj\Debug\termini.csproj.CoreCompileInputs.cache
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\termini.exe.config
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\termini.exe
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\termini.pdb
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\EntityFramework.dll
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\System.Data.SQLite.dll
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\EntityFramework.xml
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\bin\Debug\System.Data.SQLite.xml
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\obj\Debug\termini.csproj.Up2Date
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\obj\Debug\termini.exe
+C:\Users\unger\OneDrive\Dokumente\GitHub\Termini\termini\obj\Debug\termini.pdb
