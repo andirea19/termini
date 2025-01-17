@@ -96,6 +96,12 @@ namespace termini
             }
             Console.WriteLine("Drücke jede Taste, um fortzufahren...");
             Console.ReadKey();
+
+            /* 2. Select nach dem Namen für todos
+            / richtig zuordnen (Liste Gebtag - gibt dann notizen zuück)
+            /boolean - zugriff (1:n) auf pri key
+            */
+
         }
 
         // 4 Aufgaben anzeigen
