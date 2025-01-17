@@ -8,26 +8,43 @@ namespace termini
         /// <summary>
         ///  Quellen für die Datenbanken definieren
         /// </summary>
-        static string geburtstageDbPath = "Data Source=geburtstage.db";
-        static string todosDbPath = "Data Source=to-dos.db";
+        static readonly string geburtstageDbPath = "Data Source=geburtstage.db";
+        static readonly string todosDbPath = "Data Source=to-dos.db";
 
         static void Main(string[] args)
         {
             //Datenbanken einbinden
-            // TODO Datenbanken verbinden
+            // ID noch anlegen! 
+            // Foreign Key notwendig
 
-            InitializeDatabase(geburtstageDbPath, "CREATE TABLE IF NOT EXISTS Geburtstage (Id INTEGER PRIMARY KEY, Name TEXT NOT NULL, Datum TEXT NOT NULL)");
-            InitializeDatabase(todosDbPath, "CREATE TABLE IF NOT EXISTS Todos (Id INTEGER PRIMARY KEY, Aufgabe TEXT NOT NULL, Datum TEXT)");
+        
+
+                InitializeDatabase(geburtstageDbPath, "CREATE TABLE IF NOT EXISTS " +
+                "Geburtstage (Id INTEGER PRIMARY KEY, Name TEXT NOT NULL," +
+                "Datum TEXT NOT NULL, FOREIGN KEY (Id) REFERENCES todos(Id))");
+
+
+            InitializeDatabase(todosDbPath, @"
+    CREATE TABLE IF NOT EXISTS Todos (
+        Id INTEGER PRIMARY KEY,
+        Aufgabe TEXT NOT NULL,
+        Datum TEXT,
+        GeburtstagId INTEGER,
+        FOREIGN KEY (GeburtstagId) REFERENCES Geburtstage(Id)
+    )
+");
 
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine("Willkommen zu unserer super geilen To-Do- und Kalenderanwendung!");
-                Console.WriteLine("1. Aufgabe hinzufügen");
-                Console.WriteLine("2. Aufgaben anzeigen");
-                Console.WriteLine("3. Geburtstag anlegen");
-                Console.WriteLine("4. Geburtstage anzeigen");
-                Console.WriteLine("5. Programm beenden");
+                Console.WriteLine("1. Aufgabe hinzufügen.");
+                Console.WriteLine("2. Aufgaben anzeigen.");
+                Console.WriteLine("3. Geburtstag anlegen.");
+                Console.WriteLine("4. Geburtstage anzeigen.");
+                Console.WriteLine("7. Programm beenden.");
+                Console.WriteLine("5. Aufgabe zu Geburtstag hinzufügen.");
+                Console.WriteLine("6. Geburtstage mit Aufgaben anzeigen.");
                 Console.Write("Wähle eine Option: ");
 
                 string auswahl = Console.ReadLine();
@@ -46,6 +63,12 @@ namespace termini
                         GeburtstageAnzeigen();
                         break;
                     case "5":
+                        AufgabeZuGeburtstagHinzufügen();
+                        break;
+                    case "6":
+                        GeburtstageMitAufgabenAnzeigen();
+                        break;
+                    case "7":
                         return;
                     default:
                         Console.WriteLine("Ungültige Auswahl. Drücke eine beliebige Taste...");
@@ -56,6 +79,7 @@ namespace termini
         }
 
         // Initialisiere SQLite-Datenbank --- using done
+
         static void InitializeDatabase(string dbPath, string createTableQuery)
         {
             using (var connection = new SQLiteConnection(dbPath))
@@ -127,7 +151,7 @@ namespace termini
             Console.ReadKey();
         }
 
-        // Geburtstag speichern
+        // 2.5 Geburtstag speichern
         static void GeburtstagSpeichern()
         {
             Console.Write("Gib den Namen ein: ");
@@ -158,6 +182,7 @@ namespace termini
         }
 
         // Geburtstage anzeigen
+#warning "Geburtstage und Todos sind noch nicht stabil verbunden"  
         static void GeburtstageAnzeigen()
         {
             Console.WriteLine("Gespeicherte Geburtstage:");
@@ -179,5 +204,105 @@ namespace termini
             Console.WriteLine("Drücke eine Taste, um fortzufahren...");
             Console.ReadKey();
         }
+
+        /// <summary> Aufgabe hinzufügen
+        /// Ok, schwierig. Wie verbinde ich die beiden Sachen?
+        /// Info war, über ID.
+        ///
+        /// </summary>
+        static void AufgabeZuGeburtstagHinzufügen()
+        {
+            Console.WriteLine("Wähle einen Geburtstag aus, um eine Aufgabe zuzuweisen:");
+            using (var connection = new SQLiteConnection(geburtstageDbPath))
+            {
+                connection.Open();
+                string query = "SELECT Id, Name, Datum FROM Geburtstage";
+                using (var command = new SQLiteCommand(query, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        string name = reader.GetString(1);
+                        DateTime datum = DateTime.Parse(reader.GetString(2));
+                        Console.WriteLine($"{id}. {name} - {datum:dd.MM.yyyy}");
+                    }
+                }
+            }
+
+            Console.Write("Gib die ID des Geburtstags ein: ");
+            if (int.TryParse(Console.ReadLine(), out int geburtstagId))
+            {
+                Console.Write("Gib die Beschreibung der Aufgabe ein: ");
+                string aufgabe = Console.ReadLine();
+
+                Console.Write("Gib das Fälligkeitsdatum ein (dd.MM.yyyy): ");
+                if (DateTime.TryParse(Console.ReadLine(), out DateTime fälligkeitsdatum))
+                {
+                    using (var connection = new SQLiteConnection(todosDbPath))
+                    {
+                        connection.Open();
+                        string insertQuery = "INSERT INTO Todos (Aufgabe, Datum, GeburtstagId) VALUES (@aufgabe, @datum, @geburtstagId)";
+                        using (var command = new SQLiteCommand(insertQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@aufgabe", aufgabe);
+                            command.Parameters.AddWithValue("@datum", fälligkeitsdatum.ToString("yyyy-MM-dd"));
+                            command.Parameters.AddWithValue("@geburtstagId", geburtstagId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    Console.WriteLine("Aufgabe erfolgreich zugewiesen!");
+                }
+                else
+                {
+                    Console.WriteLine("Ungültiges Datum.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ungültige ID.");
+            }
+            Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+            Console.ReadKey();
+        }
+        // same as AufgabenAnzeigen, aber spicy
+
+        static void GeburtstageMitAufgabenAnzeigen()
+        {
+            Console.WriteLine("Geburtstage mit zugehörigen Aufgaben:");
+            using (var connection = new SQLiteConnection(geburtstageDbPath))
+            {
+                connection.Open();
+                string query = @"
+            SELECT g.Name, g.Datum, t.Aufgabe, t.Datum
+            FROM Geburtstage g
+            LEFT JOIN Todos t ON g.Id = t.GeburtstagId
+            ORDER BY g.Datum";
+
+                using (var command = new SQLiteCommand(query, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string name = reader.GetString(0);
+                        DateTime geburtstagsdatum = DateTime.Parse(reader.GetString(1));
+                        string aufgabe = reader.IsDBNull(2) ? "Keine Aufgaben" : reader.GetString(2);
+                        string aufgabedatum = reader.IsDBNull(3) ? "" : DateTime.Parse(reader.GetString(3)).ToString("dd.MM.yyyy");
+
+                        Console.WriteLine($"{name} - {geburtstagsdatum:dd.MM.yyyy}");
+                        if (!string.IsNullOrEmpty(aufgabe))
+                        {
+                            Console.WriteLine($"  -> Aufgabe: {aufgabe} (Fällig: {aufgabedatum})");
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+            Console.ReadKey();
+        }
+
+
+
+
     }
 }
