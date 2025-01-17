@@ -42,9 +42,14 @@ namespace termini
                 Console.WriteLine("2. Aufgaben anzeigen.");
                 Console.WriteLine("3. Geburtstag anlegen.");
                 Console.WriteLine("4. Geburtstage anzeigen.");
-                Console.WriteLine("7. Programm beenden.");
                 Console.WriteLine("5. Aufgabe zu Geburtstag hinzufügen.");
                 Console.WriteLine("6. Geburtstage mit Aufgaben anzeigen.");
+
+                Console.WriteLine("7. Geburtstag löschen");
+                Console.WriteLine("8. To-do löschen");
+
+                Console.WriteLine("9. Programm beenden.");
+
                 Console.Write("Wähle eine Option: ");
 
                 string auswahl = Console.ReadLine();
@@ -69,6 +74,12 @@ namespace termini
                         GeburtstageMitAufgabenAnzeigen();
                         break;
                     case "7":
+                        GeburtstagLöschen();
+                        break;
+                    case "8":
+                        ToDoLöschen();
+                        break;
+                    case "9":
                         return;
                     default:
                         Console.WriteLine("Ungültige Auswahl. Drücke eine beliebige Taste...");
@@ -294,6 +305,86 @@ namespace termini
                         {
                             Console.WriteLine($"  -> Aufgabe: {aufgabe} (Fällig: {aufgabedatum})");
                         }
+                    }
+                }
+            }
+            Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+            Console.ReadKey();
+        }
+
+        /* static void GeburtstagLöschen()
+         {
+             Console.Write("Gib den Namen des Geburtstags ein, den du löschen möchtest: ");
+             string name = Console.ReadLine();
+
+                     command.Parameters.AddWithValue("@name", name);
+                     int rowsAffected = command.ExecuteNonQuery();
+                     if (rowsAffected > 0)
+                     {
+                         Console.WriteLine("Geburtstag erfolgreich gelöscht.");
+                     }
+                     else
+                     {
+                         Console.WriteLine("Keinen Geburtstag gefunden.");
+                     }
+                 }
+             }
+             Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+             Console.ReadKey();
+         }
+
+         */
+        
+        // TO DO - beides groß!
+
+        static void ToDoLöschen()
+        {
+            Console.Write("Gib die Beschreibung der Aufgabe ein, die du löschen möchtest: ");
+            string beschreibung = Console.ReadLine();
+
+            using (var connection = new SQLiteConnection(todosDbPath))
+            {
+                connection.Open();
+                string query = "DELETE FROM Todos WHERE Aufgabe = @aufgabe";
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@aufgabe", beschreibung);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        Console.WriteLine("Aufgabe erfolgreich gelöscht.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Keine Aufgabe mit dieser Beschreibung gefunden.");
+                    }
+                }
+            }
+            Console.WriteLine("Drücke eine Taste, um fortzufahren...");
+            Console.ReadKey();
+        }
+
+
+        static void GeburtstagLöschen()
+        {
+            Console.Write("Gib den Namen des Geburtstags ein, den du löschen möchtest: ");
+            string name = Console.ReadLine();
+
+            using (var connection = new SQLiteConnection(geburtstageDbPath))
+            {
+                connection.Open();
+                string query = "DELETE FROM Geburtstage WHERE Name = @name";
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", name);
+                    int rowsAffected = command.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        Console.WriteLine("Geburtstag erfolgreich gelöscht.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Kein Geburtstag mit diesem Namen gefunden.");
                     }
                 }
             }
