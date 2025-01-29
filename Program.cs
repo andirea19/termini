@@ -14,7 +14,7 @@ namespace termini
         static void Main(string[] args)
         {
             //Datenbanken einbinden
-            // ID noch anlegen! 
+            // ID noch anlegen!  done
             // Foreign Key notwendig
 
         
@@ -32,6 +32,7 @@ namespace termini
         GeburtstagId INTEGER,
         FOREIGN KEY (GeburtstagId) REFERENCES Geburtstage(Id)
     )
+
 ");
 
             while (true)
