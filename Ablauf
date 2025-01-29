@@ -8,6 +8,12 @@ Darstellung von To-Dos in einem Kalenderformat (z. B. nach Tagen oder Wochen).
 Speicherung von Geburtstaginfo
 Optionale Erinnerung (z.B. eine Woche vorher).
 
+#Geplante CRUD-Operationen (SQLITE hinzufügen!)
+AddGeburtstag: Fügt einen Geburtstag in die geburtstage-Datenbank ein.
+GetAllGeburtstage: Ruft alle Geburtstage aus der Datenbank ab.
+AddTodo: Fügt ein To-Do in die to-dos-Datenbank ein.
+GetAllTodos: Ruft alle To-Dos aus der Datenbank ab.
+
 #Zusätzliche Funktionen(?):
 Filterung der Aufgaben nach Datum.
 Separate Liste für Geburtstage
